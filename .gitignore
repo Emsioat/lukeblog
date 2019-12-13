@@ -66,6 +66,7 @@ instance/
 docs/_build/
 
 # PyBuilder
+.idea/
 target/
 
 # Jupyter Notebook
