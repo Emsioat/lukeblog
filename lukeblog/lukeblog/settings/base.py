@@ -28,6 +28,7 @@ ALLOWED_HOSTS = []
 # Application definition(在前的App会覆盖在后的App)
 
 INSTALLED_APPS = [
+    'lukeblog',
     'blog',
     'config',
     'comment',
