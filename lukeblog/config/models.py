@@ -62,7 +62,7 @@ class SideBar(models.Model):
             result = self.content  # 自定义HTML
         elif self.display_type == self.DISPLAY_LATEST:
             context = {
-                'posts': Post.latest_posts()
+                'posts': Post.latest_posts(with_related=False)
             }
             result = render_to_string('config/blocks/sidebar_posts.html', context)  # 传入(模板, 字典)来渲染HTML
         elif self.display_type == self.DISPLAY_HOT:

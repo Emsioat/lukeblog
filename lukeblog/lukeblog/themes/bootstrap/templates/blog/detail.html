@@ -1,0 +1,26 @@
+{% extends "./base.html" %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block extra_head %}
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/googlecode.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
+
+{% block main %}
+    {% if post %}
+        <h1>{{ post.title }}</h1>
+        <div>
+            <span>分类：{{ post.category.name }}</span>
+            <span>作者：{{ post.owner.username }}</span>
+        </div>
+        <hr/>
+        <p>
+            {% autoescape off %}{{ post.content_html }}{% endautoescape %}
+        </p>
+    {% endif %}
+    {% load comment_block %}{% comment_block request.path %}
+{% endblock %}

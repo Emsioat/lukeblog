@@ -24,10 +24,48 @@ SECRET_KEY = 'bifzawp4z(f!8@aq5)_hnts$4s*#v_1w%7_tq51@vy%b48m13n'
 
 ALLOWED_HOSTS = []
 
+# xadmin的配置
+XADMIN_TITLE = 'LukeBlog管理后台'
+XADMIN_FOOTER_TITLE = 'Powered by Luke.'
+
+# mgadmin的配置
+MGADMIN_TITLE = 'MG-Admin管理后台'
+MGADMIN_FOOTER_TITLE = 'Powered by MoGen.'
+
+# 富文本编辑器的配置
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'tabSpaces': 4,
+        'extraPlugins': 'codesnippet',  # 配置代码插件
+    },
+}
+
+# 文件上传位置
+DEFAULT_FILE_STORAGE = 'lukeblog.storage.WatermarkStorage'  # 上传的图像添加水印
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CKEDITOR_UPLOAD_PATH = 'article_images'  # 富文本编辑器上传目录
+
+# API组件配置
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    # 默认分页配置
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 2,
+}
 
 # Application definition(在前的App会覆盖在后的App)
 
 INSTALLED_APPS = [
+    'simpleui',
     'lukeblog',
     'blog',
     'config',
@@ -38,10 +76,25 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # Django开发模式下的静态资源访问功能
+
+    'mgadmin',
+
+    # xadmin的app
+    # 'xadmin',
+    'crispy_forms',
+    'reversion',
+
+    # 富文本编辑器
+    'ckeditor',
+    'ckeditor_uploader',  # 富文本文件上传支持
+
+    # API
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
+    'blog.middleware.user_id.UserIDMiddleware',  # 在Cookie和request中增加uid
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,12 +106,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'lukeblog.urls'
 
+THEME = 'bootstrap'  # 设置主题
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../../templates')]
-        ,
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'themes', THEME, 'templates')],  # 模板优先查找目录，THEME设置模板名
+        'APP_DIRS': True,  # 找不到优先模板目录，就去找APP目录
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -106,7 +160,11 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) 在开发模式有效，生产模式无效
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR, "static"),
+    'lukeblog/themes/bootstrap/static/',
+]

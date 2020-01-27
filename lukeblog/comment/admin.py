@@ -8,5 +8,5 @@ from .models import Comment
 
 @admin.register(Comment, site=custom_site)
 class CommentAdmin(BaseOwnerAdmin):
-    list_display = ('target', 'nickname', 'content', 'website', 'created_time')
+    list_display = ('target', 'status', 'nickname', 'content', 'website', 'created_time')
     fields = ('target', 'nickname', 'content', 'website', 'email', 'status')

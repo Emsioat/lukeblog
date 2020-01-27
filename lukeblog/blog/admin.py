@@ -62,6 +62,7 @@ class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm  # 将默认form改为自定义的form（在头部引入）
     list_display = ['title', 'category', 'status', 'created_time', 'owner', 'operator']
     list_display_links = []  # 配置哪些字段可以作为链接，点击进入编辑页，设为None，则不配置任何可点击字段。
+    # raw_id_fields = ('category',)  # 将分类显示为输入框（避免外键过多造成页面加载缓慢）
 
     # list_filter = ['category', ]  # 配置页可根据category中的字段进行过滤显示（显示在文章列表的右侧，有一个过滤器）
     list_filter = [CategoryOwnerFilter]  # 自定义文章列表右侧的过滤器（需要定义CategoryOwnerFilter类）
